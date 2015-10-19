@@ -27,7 +27,7 @@ describe Oystercard do
 
     describe "#in_journey" do
         it "expects active status to change on touching in and out" do
-        expect(subject.in_journey?).to eq
+        expect(subject.in_journey?).to eq false
       end
     end
 
