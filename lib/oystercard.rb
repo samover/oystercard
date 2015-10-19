@@ -11,9 +11,14 @@ class Oystercard
     @balance += num
   end
 
+  def deduct(num)
+    @balance -= num
+  end
+
   private
 
   def full?(num)
     ((@balance + num) > LIMIT)
   end
+
 end
