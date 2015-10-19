@@ -15,3 +15,10 @@ end
 
 card.deduct(60)
 p card
+
+b1 = Barrier.new
+
+b2 = Barrier.new
+
+b1.touch_in(card)
+b2.touch_out(card)
