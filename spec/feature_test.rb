@@ -27,3 +27,10 @@ p card
 card = Oystercard.new
 card.touch_in
 
+
+station1 = Station.new
+station2 = Station.new
+card.touch_in(station1)
+card.entry_station #expect to be station1
+card.touch_out
+card.entry_station #expect to be nil
