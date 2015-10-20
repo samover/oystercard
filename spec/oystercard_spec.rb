@@ -51,7 +51,7 @@ describe Oystercard do
 
     context "touching in at a particular station" do
       it "will remember the station touched in at" do
-        expect(subject.entry_station).to eq station
+        expect(subject.journey[:entry_station]).to eq station
       end
     end
 
@@ -76,7 +76,7 @@ describe Oystercard do
       end
 
         it "resets entry station to nil" do
-          expect(subject.entry_station).to eq nil
+          expect(subject.journey[:entry_station]).to eq nil
         end
 
       context 'when touching out' do
@@ -87,7 +87,7 @@ describe Oystercard do
 
       context "when touching out at a particular station" do
         it "will remember the station touched out at" do
-          expect(subject.exit_station).to eq station2
+          expect(subject.journey[:exit_station]).to eq station2
         end
 
         it "will return a journey record" do
