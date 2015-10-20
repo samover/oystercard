@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance
+  attr_reader :balance, :in_journey
   DEFAULT_BALANCE = 0
   LIMIT = 90
   def initialize (balance=DEFAULT_BALANCE)
@@ -16,19 +16,15 @@ class Oystercard
     @balance -= num
   end
 
-  def activate
+  def touch_in
     @in_journey = true
   end
 
-  def deactivate
+  def touch_out
     @in_journey = false
   end
 
-  def in_journey?
-    @in_journey
-  end
-
-  private
+private
 
   def full?(num)
     ((@balance + num) > LIMIT)
