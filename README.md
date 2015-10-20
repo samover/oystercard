@@ -8,11 +8,11 @@ There is one class in this project:
   Oystercard contains the following methods:
     ```
     *top_up
-    *deduct
-    *balance
-    *in_journey
-    *touch_in
-    *touch_out
+    deduct
+    balance
+    in_journey
+    touch_in
+    touch_out*
     ```
 
 ## Challenge 09:
