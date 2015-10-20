@@ -1,12 +1,33 @@
 require 'oystercard'
 
 describe Oystercard do
+
   let(:station) { double :station }
 
   it "checks that default balance is zero" do
     subject.balance()
     expect(subject.balance).to eq Oystercard::DEFAULT_BALANCE
   end
+
+  describe "#in_journey?" do
+
+    context "when touching in" do
+        it "returns station (true)" do
+          subject.top_up(Oystercard::MINIMUM_FARE)
+          subject.touch_in(station)
+          expect(subject.in_journey?).to eq true
+        end
+    end
+
+    context "when touching out" do
+        it "returns not in journey" do
+          subject.touch_out(station)
+          expect(subject.in_journey?).to eq false
+        end
+    end
+
+  end
+
 
   describe "#top_up" do
     it "allows for balance to be topped up" do
@@ -28,10 +49,6 @@ describe Oystercard do
       subject.touch_in(station)
     end
 
-    it "status 'in journey' to be true" do
-      expect(subject.in_journey).to eq true
-    end
-
     context "touching in at a particular station" do
       it "will remember the station touched in at" do
         expect(subject.entry_station).to eq station
@@ -40,32 +57,43 @@ describe Oystercard do
 
     context "when touching in with insufficient funds" do
       it "should raise an error" do
-        subject.touch_out
+        subject.touch_out(station)
         expect{subject.touch_in(station)}.to raise_error "Unable to touch in: insufficient balance"
       end
-
-
     end
 
   end
 
   describe "#touch_out" do
+
+    let(:station2) {double(:station)}
+
       before(:each) do
         subject.top_up(2)
         subject.touch_in(station)
+        subject.touch_out(station2)
+
       end
 
-        it "status 'in journey' to be false" do
-          subject.touch_out
-          expect(subject.in_journey).to eq false
+        it "resets entry station to nil" do
+          expect(subject.entry_station).to eq nil
         end
 
       context 'when touching out' do
         it 'deducts the fare' do
-          expect{subject.touch_out}.to change{subject.balance}.by -Oystercard::MINIMUM_FARE
+          expect{subject.touch_out(station2)}.to change{subject.balance}.by -Oystercard::MINIMUM_FARE
         end
       end
 
+      context "when touching out at a particular station" do
+        it "will remember the station touched out at" do
+          expect(subject.exit_station).to eq station2
+        end
+
+        it "will return a journey record" do
+          expect(subject.history.last).to eq({entry_station: station, exit_station: station2})
+        end
+      end
 
   end
 end
