@@ -20,25 +20,18 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct" do
-    it "allows for deduct method" do
-      subject.top_up(30)
-      expect(subject.deduct(20)).to eq 10
-    end
-  end
-
   describe "#touch_in" do
     before(:each) do
       subject.top_up(Oystercard::MINIMUM_FARE)
+      subject.touch_in
     end
     it "status 'in journey' to be true" do
-      subject.touch_in
       expect(subject.in_journey).to eq true
     end
 
     context "when touching in with insufficient funds" do
       it "should raise an error" do
-        subject.deduct(Oystercard::MINIMUM_FARE)
+        subject.touch_out
         expect{subject.touch_in}.to raise_error "Unable to touch in: insufficient balance"
       end
     end
@@ -46,10 +39,19 @@ describe Oystercard do
   end
 
   describe "#touch_out" do
-
+    before(:each) do
+      subject.top_up(2)
+      subject.touch_in
+    end
       it "status 'in journey' to be false" do
         subject.touch_out
         expect(subject.in_journey).to eq false
+      end
+
+    context 'when touching out' do
+      it 'deducts the fare' do
+        expect{subject.touch_out}.to change{subject.balance}.by -Oystercard::MINIMUM_FARE
+      end
     end
 
   end

@@ -13,10 +13,6 @@ class Oystercard
     @balance += num
   end
 
-  def deduct(num)
-    @balance -= num
-  end
-
   def touch_in
     fail "Unable to touch in: insufficient balance" if insufficient_balance?
     # deduct
@@ -24,6 +20,7 @@ class Oystercard
   end
 
   def touch_out
+    deduct(MINIMUM_FARE)
     @in_journey = false
   end
 
@@ -35,6 +32,10 @@ private
 
   def insufficient_balance?
     @balance < MINIMUM_FARE
+  end
+
+  def deduct(num)
+    @balance -= num
   end
 
 end
