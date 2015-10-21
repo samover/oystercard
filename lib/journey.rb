@@ -15,6 +15,7 @@ class Journey
 
   def touch_out(station)
     @exit_station = station
+
   end
 
   def fare
