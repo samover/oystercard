@@ -5,7 +5,6 @@ class Oystercard
   LIMIT = 90
   def initialize (balance=DEFAULT_BALANCE)
     @balance = balance
-    @in_journey = false
     @history = []
     @journey = {}
   end

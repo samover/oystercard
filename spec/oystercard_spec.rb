@@ -45,6 +45,8 @@ describe Oystercard do
 
   describe "#touch_in" do
     before(:each) do
+      allow(station).to receive(:zone).and_return("zone")
+      allow(station).to receive(:location).and_return("location")
       subject.top_up(Oystercard::MINIMUM_FARE)
       subject.touch_in(station)
     end
@@ -53,6 +55,15 @@ describe Oystercard do
       it "will remember the station touched in at" do
         expect(subject.journey[:entry_station]).to eq station
       end
+
+      it "will return the station zone" do
+        expect((subject).journey[:entry_station].zone).to eq "zone"
+      end
+
+      it "will return the station location" do
+        expect((subject).journey[:entry_station].location).to eq "location"
+      end
+
     end
 
     context "when touching in with insufficient funds" do
