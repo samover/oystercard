@@ -40,4 +40,14 @@ describe Journey do
       end
   end
 
+  context "when touching out at a particular station" do
+    # it "will remember the station touched out at" do
+    #   expect(subject.journey[:exit_station]).to eq station2
+    # end
+
+    it "will return a journey record" do
+      expect(subject.history.last).to eq journey
+    end
+  end
+
 end

@@ -2,6 +2,7 @@ class Journey
 
   MINIMUM_FARE = 1
   MAXIMUM_FARE = 6
+  attr_reader :entry_station
 
   def initialize
     @entry_station = nil
@@ -25,6 +26,10 @@ class Journey
     end
   end
 
+  def reset_entry_station
+    @entry_station = nil
+  end
+  
   def complete?
     @entry_station != nil && @exit_station != nil ? true : false
   end
