@@ -8,11 +8,11 @@ class JourneyTest
     @history = []
   end
 
-  def start_journey(station)
+  def start(station)
     @entry_station = station
   end
 
-  def end_journey(station)
+  def end(station)
     @exit_station = station
   end
 

@@ -2,13 +2,14 @@ require_relative 'station'       # => true
 require_relative 'journey_test'  # => true
 
 class OystercardTest
+  attr_reader :balance, :journey  # => nil
 
-    MINIMUM_FARE = 1     # => 1
-    DEFAULT_BALANCE = 0  # => 0
-    LIMIT = 90           # => 90
+  MINIMUM_FARE = 1     # => 1
+  DEFAULT_BALANCE = 0  # => 0
+  LIMIT = 90           # => 90
 
   def initialize (balance = DEFAULT_BALANCE)
-    @balance = balance                        # => 0
+    @balance = balance                        # => 90
   end
 
   def top_up(value)
@@ -17,15 +18,15 @@ class OystercardTest
   end
 
   def touch_in(station, journey = JourneyTest.new)
-    # deduct(penalty_fare) if in_journey?
-    fail "Unable to touch in: insufficient balance" if insufficient_balance?
-    journey.start_journey(station) # journey.entry_station = station
+    # deduct(journey.fare) if in_journey?
+    fail "Unable to touch in: insufficient balance" if balance < MINIMUM_FARE  # => nil
+    journey.start(station) # journey.entry_station = station
   end
 
   def touch_out(station)
-    trip.end(station) # journey.exit_station = station
+    journey.end(station) # journey.exit_station = station
     deduct(trip.fare)
-    trip.log
+    journey.log
   end
 
   def start_journey(station)
@@ -33,19 +34,16 @@ class OystercardTest
   end
 
   def in_journey?
-    journey.in_progress?  # ~> NameError: undefined local variable or method `journey' for #<OystercardTest:0x007fa07897a548 @balance=0>
+    journey.in_progress?
   end
 
 end
 
-card = OystercardTest.new              # => #<OystercardTest:0x007fa07897a548 @balance=0>
-aldgate = Station.new(2, 'aldgate')    # => #<Station:0x007fa07897a2c8 @zone=2, @location="aldgate">
-victoria = Station.new(2, 'victoria')  # => #<Station:0x007fa07897a110 @zone=2, @location="victoria">
+card = OystercardTest.new(90)          # => #<OystercardTest:0x007fcb0183e9f0 @balance=90>
+aldgate = Station.new(2, 'aldgate')    # => #<Station:0x007fcb0183e770 @zone=2, @location="aldgate">
+victoria = Station.new(2, 'victoria')  # => #<Station:0x007fcb0183e5e0 @zone=2, @location="victoria">
 
-card.touch_in victoria
-
-card.journey
-card.history
+card.touch_in victoria  # => #<Station:0x007fcb0183e5e0 @zone=2, @location="victoria">
 
 card.touch_out aldgate
 
@@ -63,9 +61,8 @@ card.touch_in victoria
 card.touch_in victoria
 card.journey.history    #
 
-# ~> NameError
-# ~> undefined local variable or method `journey' for #<OystercardTest:0x007fa07897a548 @balance=0>
+# ~> NoMethodError
+# ~> undefined method `end' for nil:NilClass
 # ~>
-# ~> /Users/samuel/MAKERS/course_challenges/oystercard_thursday/lib/oystercard_test.rb:36:in `in_journey?'
-# ~> /Users/samuel/MAKERS/course_challenges/oystercard_thursday/lib/oystercard_test.rb:20:in `touch_in'
-# ~> /Users/samuel/MAKERS/course_challenges/oystercard_thursday/lib/oystercard_test.rb:45:in `<main>'
+# ~> /Users/samuel/MAKERS/course_challenges/oystercard_thursday/lib/oystercard_test.rb:27:in `touch_out'
+# ~> /Users/samuel/MAKERS/course_challenges/oystercard_thursday/lib/oystercard_test.rb:48:in `<main>'

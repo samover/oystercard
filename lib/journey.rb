@@ -4,18 +4,12 @@ class Journey
   MAXIMUM_FARE = 6                                       # => 6
   attr_accessor :entry_station, :exit_station, :history  # => nil
 
-  def initialize
-    @history = []
-    # @entry_station = nil
-    # @exit_station = nil
-  end
-
   def touch_in(station)
     @entry_station = [station.location, station.zone]
   end
 
   def touch_out(station)
-    @exit_station = station.nil? ? station : [station.location, station.zone]
+    @exit_station = station == nil ? station : [station.location, station.zone]
   end
 
   def fare
@@ -25,7 +19,6 @@ class Journey
 
   def log
     history << {entry_station => exit_station}
-    reset
   end
 
   def reset
