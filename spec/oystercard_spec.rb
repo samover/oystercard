@@ -62,4 +62,21 @@ describe Oystercard do
       expect{subject.touch_out(station2)}.to change{subject.balance}.by(-Journey::MAXIMUM_FARE)
     end
   end
+
+  context '#history' do
+    let(:journey) { double(:journey, touch_in: :entry_station, touch_out: :exit_station)}
+
+    it 'when journey complete' do
+      subject.top_up 20
+      subject.touch_in :entry_station
+      subject.touch_out :exit_station
+      expect(subject.history).to eq({entry_station: :exit_station})
+    end
+    it 'when fail to touch out' do
+
+    end
+    it 'when fail to touch in' do
+
+    end
+  end
 end

@@ -1,4 +1,4 @@
-class Journey
+class JourneyTest
 
   MINIMUM_FARE = 1                                       # => 1
   MAXIMUM_FARE = 6                                       # => 6
@@ -6,16 +6,14 @@ class Journey
 
   def initialize
     @history = []
-    # @entry_station = nil
-    # @exit_station = nil
   end
 
-  def touch_in(station)
-    @entry_station = [station.location, station.zone]
+  def start_journey(station)
+    @entry_station = station
   end
 
-  def touch_out(station)
-    @exit_station = station.nil? ? station : [station.location, station.zone]
+  def end_journey(station)
+    @exit_station = station
   end
 
   def fare
@@ -25,7 +23,6 @@ class Journey
 
   def log
     history << {entry_station => exit_station}
-    reset
   end
 
   def reset
