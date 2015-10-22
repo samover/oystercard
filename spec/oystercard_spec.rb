@@ -2,7 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
 
-  let(:station) { double :station }
+  let(:station) { double(:station, location: :location, zone: :zone)}
   let(:journey) { double :journey}
 
   it "checks that default balance is zero" do
@@ -43,7 +43,7 @@ describe Oystercard do
   end
 
   context "#touch_out" do
-    let(:station2) {double(:station)}
+    # let(:station2) {double(:station, location: :location, zone: :zone )}
 
     before(:each) do
       subject.top_up(2)
@@ -59,24 +59,18 @@ describe Oystercard do
     end
     it 'deducts maximum fare when failed to touch in' do
       subject.touch_out(station)
-      expect{subject.touch_out(station2)}.to change{subject.balance}.by(-Journey::MAXIMUM_FARE)
+      expect{subject.touch_out(station)}.to change{subject.balance}.by(-Journey::MAXIMUM_FARE)
     end
   end
 
   context '#history' do
     let(:journey) { double(:journey, touch_in: :entry_station, touch_out: :exit_station)}
-
+    let(:entry_station) {[:location, :zone]}
     it 'when journey complete' do
       subject.top_up 20
-      subject.touch_in :entry_station
-      subject.touch_out :exit_station
-      expect(subject.history).to eq({entry_station: :exit_station})
-    end
-    it 'when fail to touch out' do
-
-    end
-    it 'when fail to touch in' do
-
+      subject.touch_in station
+      subject.touch_out station
+      expect(subject.history.first.entry_station).to eq entry_station
     end
   end
 end

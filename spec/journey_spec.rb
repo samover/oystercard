@@ -2,17 +2,17 @@ require 'journey'
 
 describe Journey do
 
- let(:station) { double :station }
+ let(:station) { double(:station, location: :location, zone: :zone)}
 
   context "#touch_in" do
     it "should return entry station" do
-      expect(subject.touch_in(station)).to eq station
+      expect(subject.touch_in(station)).to eq [station.location, station.zone]
     end
   end
 
   context "#touch_out" do
     it "should return exit station" do
-      expect(subject.touch_out(station)).to eq station
+      expect(subject.touch_out(station)).to eq [station.location, station.zone]
     end
   end
 
