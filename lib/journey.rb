@@ -19,7 +19,7 @@ class Journey
   end
 
   def fare
-    if complete?
+    unless in_progress?
       fare = MINIMUM_FARE
     else
       fare = MAXIMUM_FARE
@@ -29,9 +29,11 @@ class Journey
   def reset_entry_station
     @entry_station = nil
   end
-  
-  def complete?
-    @entry_station != nil && @exit_station != nil ? true : false
+
+  def in_progress?
+    @entry_station != nil
   end
+
+
 
 end

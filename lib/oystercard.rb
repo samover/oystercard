@@ -31,7 +31,7 @@ class Oystercard
   end
 
   def in_journey?
-    @journey.entry_station ? true : false
+    journey.in_progress?
   end
 
 private
