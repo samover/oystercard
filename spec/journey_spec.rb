@@ -8,11 +8,21 @@ describe Journey do
     it "should return entry station" do
       expect(subject.touch_in(station)).to eq [station.location, station.zone]
     end
+
+    it 'knows a journey is in progress' do
+      subject.touch_in station
+      expect(subject).to be_in_progress
+    end
   end
 
   context "#touch_out" do
     it "should return exit station" do
       expect(subject.touch_out(station)).to eq [station.location, station.zone]
+    end
+
+    it 'knows a journey is finished' do
+      subject.touch_out station
+      expect(subject).not_to be_in_progress
     end
   end
 
