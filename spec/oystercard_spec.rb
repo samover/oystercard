@@ -43,7 +43,6 @@ describe Oystercard do
   end
 
   context "#touch_out" do
-
     let(:station2) {double(:station)}
 
     before(:each) do

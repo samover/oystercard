@@ -18,7 +18,7 @@ class Oystercard
   end
 
   def touch_in(station)
-    deduct(@journey.fare) unless journey.entry_station.nil?
+    touch_out(nil) unless journey.entry_station.nil?
     fail "Unable to touch in: insufficient balance" if insufficient_balance?
     @journey.touch_in(station)
   end

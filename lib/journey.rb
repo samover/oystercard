@@ -2,7 +2,7 @@ class Journey
 
   MINIMUM_FARE = 1
   MAXIMUM_FARE = 6
-  attr_reader :entry_station
+  attr_reader :entry_station, :exit_station
 
   def initialize
     @entry_station = nil
@@ -19,11 +19,8 @@ class Journey
   end
 
   def fare
-    unless in_progress?
-      fare = MINIMUM_FARE
-    else
-      fare = MAXIMUM_FARE
-    end
+    return MAXIMUM_FARE if entry_station == nil || exit_station == nil
+    MINIMUM_FARE
   end
 
   def reset_entry_station
